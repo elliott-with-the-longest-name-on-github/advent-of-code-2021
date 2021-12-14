@@ -48,7 +48,7 @@ func TestDiagnosticLogPowerConsumption(t *testing.T) {
 
 	log, err := diagnostic.FromBinaryStrings(inputBinary, 5)
 	if err != nil {
-		t.Errorf("diagnostic package failed to parse binary with error %e", err)
+		t.Errorf("diagnostic package failed to parse binary with error %s", err)
 	}
 
 	pc := log.PowerConsumption()
@@ -75,7 +75,7 @@ func TestLifeSupportRating(t *testing.T) {
 
 	log, err := diagnostic.FromBinaryStrings(inputBinary, 5)
 	if err != nil {
-		t.Errorf("diagnostic package failed to parse binary with error %e", err)
+		t.Errorf("diagnostic package failed to parse binary with error %s", err)
 	}
 
 	lsr := log.LifeSupportRating()

@@ -44,7 +44,7 @@ func TestVisibleDotsAfterFold(t *testing.T) {
 
 	firstFold, err := paper.Fold("up", 7)
 	if err != nil {
-		t.Errorf("paper failed on the first fold with error %e", err)
+		t.Errorf("paper failed on the first fold with error %s", err)
 	}
 
 	fmt.Println("Paper state after first fold:")
@@ -58,7 +58,7 @@ func TestVisibleDotsAfterFold(t *testing.T) {
 
 	secondFold, err := firstFold.Fold("left", 5)
 	if err != nil {
-		t.Errorf("paper failed on the second fold with error %e", err)
+		t.Errorf("paper failed on the second fold with error %s", err)
 	}
 
 	fmt.Println("Paper state after second fold:")

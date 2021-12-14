@@ -19,7 +19,7 @@ func TestSubmarineMovement(t *testing.T) {
 	sub := submarine.Submarine{}
 	err := sub.Move(instructions...)
 	if err != nil {
-		t.Errorf("submarine movement failed with error: %e", err)
+		t.Errorf("submarine movement failed with error: %s", err)
 	}
 
 	finalDistance := sub.FinalDistance()
