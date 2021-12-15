@@ -135,8 +135,8 @@ func TestMostFrequentElement(t *testing.T) {
 
 func BenchmarkSubstitutions(b *testing.B) {
 	for i := 10; i < 200; i += 10 {
+		template := makeTestTemplate()
 		b.Run(strconv.Itoa(i), func(b *testing.B) {
-			template := makeTestTemplate()
 			for j := 0; j < b.N; j++ {
 				template.SubstituteMany(i)
 			}

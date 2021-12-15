@@ -32,26 +32,15 @@ func (p *PolymerTemplate) SubstituteMany(iterations int) {
 }
 
 func (p *PolymerTemplate) Substitute() {
-	// Keep track of our additions and subtractions and reconcile
-	// them afterwards
-	pairActions := make(map[string]int)
-	elementActions := make(map[rune]int)
-	for k, v := range p.Polymer {
-		runes := []rune(k)
-		newRune := p.SubstitutionRules[k]
-		elementActions[newRune] += v
-		pairActions[k] += -v
-		newFirstPair := string(runes[0]) + string(newRune)
-		newSecondPair := string(newRune) + string(runes[1])
-		pairActions[newFirstPair] += v
-		pairActions[newSecondPair] += v
+	newPolymer := make(map[string]int)
+	for pair, count := range p.Polymer {
+		runes := []rune(pair)
+		newRune := p.SubstitutionRules[pair]
+		p.incrementElementCountBy(newRune, count)
+		newPolymer[string(runes[0])+string(newRune)] += count
+		newPolymer[string(newRune)+string(runes[1])] += count
 	}
-	for k, v := range pairActions {
-		p.incrementPairCountBy(k, v)
-	}
-	for k, v := range elementActions {
-		p.incrementElementCountBy(k, v)
-	}
+	p.Polymer = newPolymer
 }
 
 func (p *PolymerTemplate) MostFrequentElement() (element rune, count int) {
