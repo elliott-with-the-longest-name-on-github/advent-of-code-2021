@@ -2,191 +2,162 @@ package chiton
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/RyanCarrier/dijkstra"
 )
 
-func FromLinesExtended(lines []string, timesBigger int) (dijkstra.BestPath, error) {
-	newLines := make([]string, len(lines)*timesBigger)
+type ChitonMapper struct {
+	graph     *dijkstra.Graph
+	matrix    [][]int
+	StartNode int
+	EndNode   int
+}
+
+func FromLinesExtended(lines []string, timesBigger int) (*ChitonMapper, error) {
+	matrix := parseLinesIntoMatrix(lines)
+	return FromMatrixExtended(matrix, timesBigger)
+}
+
+func FromLines(lines []string) (*ChitonMapper, error) {
+	matrix := parseLinesIntoMatrix(lines)
+	return FromMatrix(matrix)
+}
+
+func parseLinesIntoMatrix(lines []string) [][]int {
+	numLines := len(lines)
+	matrix := make([][]int, 0, numLines)
+	for _, line := range lines {
+		runes := []rune(line)
+		row := make([]int, 0, len(runes))
+		for _, r := range runes {
+			row = append(row, int(r-'0'))
+		}
+		matrix = append(matrix, row)
+	}
+	return matrix
+}
+
+func FromMatrixExtended(matrix [][]int, timesBigger int) (*ChitonMapper, error) {
+	numLines := len(matrix)
+	lineLen := len(matrix[0])
+	newMatrix := make([][]int, 0, numLines*timesBigger)
 
 	// Extend horizontally
-	for i, line := range lines {
-		newLine := ""
+	for _, line := range matrix {
+		if len(line) != lineLen {
+			return nil, fmt.Errorf("a provided line was a different length from the first line. All lines must be the same length")
+		}
+		newLine := make([]int, 0, lineLen*timesBigger)
 		for j := 0; j < timesBigger; j++ {
-			newLinePart := ""
-			for _, character := range line {
-				newNum, _ := strconv.Atoi(string(character))
-				newNum = newNum + j
+			for _, num := range line {
+				newNum := num + j
 				if newNum > 9 {
 					newNum = newNum - 9
 				}
-				newLinePart += strconv.Itoa(newNum)
+				newLine = append(newLine, newNum)
 			}
-			newLine += newLinePart
 		}
-		newLines[i] = newLine
+		newMatrix = append(newMatrix, newLine)
 	}
 
 	// Extend vertically downward
 	for i := 1; i < timesBigger; i++ {
-		for j := 0; j < len(lines); j++ {
-			newLine := ""
-			for _, character := range newLines[j] {
-				newNum, _ := strconv.Atoi(string(character))
-				newNum = newNum + i
+		for j := 0; j < numLines; j++ {
+			newLine := make([]int, 0, lineLen*timesBigger)
+			for _, num := range newMatrix[j] {
+				newNum := num + i
 				if newNum > 9 {
 					newNum = newNum - 9
 				}
-				newLine += strconv.Itoa(newNum)
+				newLine = append(newLine, newNum)
 			}
-			newLines[(len(lines)*i)+j] = newLine
+			newMatrix = append(newMatrix, newLine)
 		}
 	}
 
-	return FromLines(newLines)
+	return FromMatrix(newMatrix)
 }
 
-func FromLines(lines []string) (dijkstra.BestPath, error) {
+func FromMatrix(matrix [][]int) (*ChitonMapper, error) {
+	numLines := len(matrix)
+	lineLen := len(matrix[0])
 	graph := dijkstra.NewGraph()
-	lastNodeId := (len(lines))*(len(lines[0])) - 1 // assumes all lines are the same len
+	lastNodeId := (numLines * lineLen) - 1 // assumes all lines are same len; verified in loops
 
 	// Easier to map if we have all vertices already
-	for i := 0; i < len(lines); i++ {
-		for j := 0; j < len(lines[i]); j++ {
-			id := (i*len(lines[i]) + j)
+	for i := 0; i < numLines; i++ {
+		if len(matrix[i]) != lineLen {
+			return nil, fmt.Errorf("a provided line was a different length from the first line. All lines must be the same length")
+		}
+		for j := 0; j < lineLen; j++ {
+			id := (i*lineLen + j)
 			graph.AddVertex(id)
 		}
 	}
-	for i := 0; i < len(lines); i++ {
-		for j := 0; j < len(lines[i]); j++ {
-			id := (i*len(lines[i]) + j)
-			if i != len(lines)-1 {
-				downCost, err := strconv.Atoi(string(lines[i+1][j]))
-				if err != nil {
-					return dijkstra.BestPath{}, fmt.Errorf("failed to convert character %v to an int", string(lines[i+1][j]))
-				}
-				graph.AddArc(id, id+len(lines[i]), int64(downCost))
+	for i := 0; i < numLines; i++ {
+		for j := 0; j < lineLen; j++ {
+			id := (i*lineLen + j)
+			if i != lineLen-1 {
+				downCost := matrix[i+1][j]
+				graph.AddArc(id, id+len(matrix[i]), int64(downCost))
 			}
-			if j != len(lines[i])-1 {
-				rightCost, err := strconv.Atoi(string(lines[i][j+1]))
-				if err != nil {
-					return dijkstra.BestPath{}, fmt.Errorf("failed to convert character %v to an int", string(lines[i][j+1]))
-				}
+			if j != lineLen-1 {
+				rightCost := matrix[i][j+1]
 				graph.AddArc(id, id+1, int64(rightCost))
 			}
 			if j != 0 {
-				leftCost, err := strconv.Atoi(string(lines[i][j-1]))
-				if err != nil {
-					return dijkstra.BestPath{}, fmt.Errorf("failed to convert character %v to an int", string(lines[i][j-1]))
-				}
+				leftCost := matrix[i][j-1]
 				graph.AddArc(id, id-1, int64(leftCost))
 			}
 			if i != 0 {
-				upCost, err := strconv.Atoi(string(lines[i-1][j]))
-				if err != nil {
-					return dijkstra.BestPath{}, fmt.Errorf("failed to convert character %v to an int", string(lines[i-1][j]))
-				}
-				graph.AddArc(id, id-len(lines[i]), int64(upCost))
+				upCost := matrix[i-1][j]
+				graph.AddArc(id, id-lineLen, int64(upCost))
 			}
 		}
 	}
-	path, err := graph.Shortest(0, lastNodeId)
+	mapper := &ChitonMapper{
+		graph:     graph,
+		matrix:    matrix,
+		StartNode: 0,
+		EndNode:   lastNodeId,
+	}
+	return mapper, nil
+}
+
+func (c *ChitonMapper) BestPath() (path []int, cost int, err error) {
+	bestPath, err := c.graph.Shortest(c.StartNode, c.EndNode)
 	if err != nil {
-		return dijkstra.BestPath{}, err
+		return nil, 0, fmt.Errorf("error determining best path")
 	}
-	return path, nil
+	return bestPath.Path, int(bestPath.Distance), nil
 }
 
-func FromLinesExtendedVerbose(lines []string, timesBigger int) {
-	newLines := make([]string, len(lines)*timesBigger)
-
-	// Extend horizontally
-	for i, line := range lines {
-		newLine := ""
-		for j := 0; j < timesBigger; j++ {
-			newLinePart := ""
-			for _, character := range line {
-				newNum, _ := strconv.Atoi(string(character))
-				newNum = newNum + j
-				if newNum > 9 {
-					newNum = newNum - 9
-				}
-				newLinePart += strconv.Itoa(newNum)
-			}
-			newLine += newLinePart
-		}
-		newLines[i] = newLine
+func (c *ChitonMapper) PrintBestPath() (path []int, cost int, err error) {
+	numLines := len(c.matrix)
+	lineLen := len(c.matrix[0])
+	path, cost, err = c.BestPath()
+	if err != nil {
+		return nil, 0, err
 	}
-
-	// Extend vertically downward
-	for i := 1; i < timesBigger; i++ {
-		for j := 0; j < len(lines); j++ {
-			newLine := ""
-			for _, character := range newLines[j] {
-				newNum, _ := strconv.Atoi(string(character))
-				newNum = newNum + i
-				if newNum > 9 {
-					newNum = newNum - 9
-				}
-				newLine += strconv.Itoa(newNum)
-			}
-			newLines[(len(lines)*i)+j] = newLine
-		}
-	}
-
-	graph := dijkstra.NewGraph()
-	lastNodeId := (len(newLines))*(len(newLines[0])) - 1 // assumes all newLines are the same len
-
-	// Easier to map if we have all vertices already
-	for i := 0; i < len(newLines); i++ {
-		for j := 0; j < len(newLines[i]); j++ {
-			id := (i*len(newLines[i]) + j)
-			graph.AddVertex(id)
-		}
-	}
-	for i := 0; i < len(newLines); i++ {
-		for j := 0; j < len(newLines[i]); j++ {
-			id := (i*len(newLines[i]) + j)
-			if i != len(newLines)-1 {
-				downCost, _ := strconv.Atoi(string(newLines[i+1][j]))
-				graph.AddArc(id, id+len(newLines[i]), int64(downCost))
-			}
-			if j != len(newLines[i])-1 {
-				rightCost, _ := strconv.Atoi(string(newLines[i][j+1]))
-				graph.AddArc(id, id+1, int64(rightCost))
-			}
-			if j != 0 {
-				leftCost, _ := strconv.Atoi(string(newLines[i][j-1]))
-				graph.AddArc(id, id-1, int64(leftCost))
-			}
-			if i != 0 {
-				upCost, _ := strconv.Atoi(string(newLines[i-1][j]))
-				graph.AddArc(id, id-len(newLines[i]), int64(upCost))
-			}
-		}
-	}
-	path, _ := graph.Shortest(0, lastNodeId)
-
-	solution := path.Path
-	for i := 0; i < len(newLines); i++ {
-		for j := 0; j < len(newLines[i]); j++ {
-			id := (i*len(newLines[i]) + j)
-			v, _ := graph.GetVertex(id)
+	for i := 0; i < numLines; i++ {
+		for j := 0; j < lineLen; j++ {
+			id := (i * lineLen) + j
+			v, _ := c.graph.GetVertex(id)
 			contains := false
-			for _, id := range solution {
+			for _, id := range path {
 				if v.ID == id {
 					contains = true
 				}
 			}
 			if contains {
-				fmt.Print("[" + string(newLines[i][j]) + "]")
+				fmt.Print("[" + string(rune(c.matrix[i][j])) + "]")
 			} else {
-				fmt.Print(" " + string(newLines[i][j]) + " ")
+				fmt.Print(" " + string(rune(c.matrix[i][j])) + " ")
 			}
 		}
 		fmt.Println()
 	}
+	return path, cost, err
 }
 
 var ChallengeLines []string = []string{

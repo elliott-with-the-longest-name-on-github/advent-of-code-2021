@@ -7,9 +7,13 @@ import (
 )
 
 func main() {
-	path, err := chiton.FromLinesExtended(chiton.ChallengeLines, 5)
+	c, err := chiton.FromLinesExtended(chiton.ChallengeLines, 5)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(path.Distance)
+	_, cost, err := c.BestPath()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(cost)
 }

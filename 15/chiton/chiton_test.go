@@ -1,7 +1,6 @@
 package chiton_test
 
 import (
-	"fmt"
 	"testing"
 
 	"example.com/aoc15/chiton"
@@ -21,22 +20,29 @@ var lines []string = []string{
 }
 
 func TestPathDistance(t *testing.T) {
-	best, err := chiton.FromLines(lines)
+	c, err := chiton.FromLines(lines)
+	if err != nil {
+		t.Errorf("failed to initialize ChitonMapper")
+	}
+	_, cost, err := c.BestPath()
 	if err != nil {
 		t.Errorf("failed to determine best path with error %v", err)
 	}
-	if best.Distance != 40 {
-		t.Errorf("incorrect distance for best path. Want: %v, got: %v", 40, best.Distance)
+	if cost != 40 {
+		t.Errorf("incorrect distance for best path. Want: %v, got: %v", 40, cost)
 	}
 }
 
 func TestExtendedPathDistance(t *testing.T) {
-	best, err := chiton.FromLinesExtended(lines, 5)
+	c, err := chiton.FromLinesExtended(lines, 5)
+	if err != nil {
+		t.Errorf("failed to initialize ChitonMapper")
+	}
+	_, cost, err := c.BestPath()
 	if err != nil {
 		t.Errorf("failed to determine best path with error %v", err)
 	}
-	if best.Distance != 315 {
-		fmt.Println(best.Path)
-		t.Errorf("incorrect distance for best path. Want: %v, got: %v", 315, best.Distance)
+	if cost != 315 {
+		t.Errorf("incorrect distance for best path. Want: %v, got: %v", 315, cost)
 	}
 }
