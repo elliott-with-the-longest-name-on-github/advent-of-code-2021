@@ -2,6 +2,7 @@ package chiton
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/RyanCarrier/dijkstra"
 )
@@ -149,10 +150,11 @@ func (c *ChitonMapper) PrintBestPath() (path []int, cost int, err error) {
 					contains = true
 				}
 			}
+			num := strconv.Itoa(c.matrix[i][j])
 			if contains {
-				fmt.Print("[" + string(rune(c.matrix[i][j])) + "]")
+				fmt.Print("[" + num + "]")
 			} else {
-				fmt.Print(" " + string(rune(c.matrix[i][j])) + " ")
+				fmt.Print(" " + num + " ")
 			}
 		}
 		fmt.Println()
