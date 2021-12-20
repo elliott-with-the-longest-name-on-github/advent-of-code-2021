@@ -128,16 +128,19 @@ func (num *SnailfishNumber) Reduce() *SnailfishNumber {
 func (num *SnailfishNumber) Magnitude() int {
 	leftIsLeaf := num.Left == nil
 	rightIsLeaf := num.Right == nil
-	if leftIsLeaf && rightIsLeaf {
-		return (num.LeftNum * 3) + (num.RightNum * 2)
-	}
+	leftMag := 0
+	rightMag := 0
 	if leftIsLeaf {
-		return (num.LeftNum * 3) + (num.Right.Magnitude() * 2)
+		leftMag = num.LeftNum * 3
+	} else {
+		leftMag = num.Left.Magnitude() * 3
 	}
 	if rightIsLeaf {
-		return (num.Left.Magnitude() * 3) + (num.RightNum * 2)
+		rightMag = num.RightNum * 2
+	} else {
+		rightMag = num.Right.Magnitude() * 2
 	}
-	return (num.Left.Magnitude() * 3) + (num.Right.Magnitude() * 2)
+	return leftMag + rightMag
 }
 
 func (num *SnailfishNumber) String() string {
