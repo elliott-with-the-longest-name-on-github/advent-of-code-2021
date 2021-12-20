@@ -16,10 +16,12 @@ type SnailfishNumber struct {
 }
 
 func (num *SnailfishNumber) Add(right *SnailfishNumber) *SnailfishNumber {
+	// the CloneDeeps insure that we don't modify the original number or the number we're adding to it.
+	// just makes debugging a heck of a lot easier and the library a bit more functional.
 	newNumber := &SnailfishNumber{
 		Parent:   nil,
-		Left:     num,
-		Right:    right,
+		Left:     num.CloneDeep(),
+		Right:    right.CloneDeep(),
 		LeftNum:  -1,
 		RightNum: -1,
 	}
@@ -27,6 +29,13 @@ func (num *SnailfishNumber) Add(right *SnailfishNumber) *SnailfishNumber {
 	newNumber.Right.Parent = newNumber
 
 	return newNumber.Reduce()
+}
+
+// Technically this is not as efficient, but in order to make this library more "functional"
+// and to prevent bugs in routines such as GreatestMagnitudeOfTwo, we need a method of cloning
+// SnailfishNumbers. Which will be recursive... of course.
+func (num *SnailfishNumber) CloneDeep() *SnailfishNumber {
+	return num.cloneDeepRecursiveHelper(nil)
 }
 
 func Sum(numbers []*SnailfishNumber) *SnailfishNumber {
@@ -156,12 +165,7 @@ func FromString(str string) (*SnailfishNumber, error) {
 // FromRunes parses a rune array and constructs a SnailfishNumber. Listen, I did my best on error handling here.
 // I do not have infinite time. Just don't feed it bad numbers and we can all be happy.
 func FromRunes(runes []rune, parent *SnailfishNumber) (*SnailfishNumber, error) {
-	var num *SnailfishNumber
-	if parent == nil {
-		num = &SnailfishNumber{Parent: nil}
-	} else {
-		num = &SnailfishNumber{Parent: parent}
-	}
+	num := &SnailfishNumber{Parent: parent}
 
 	if runes[0] != '[' {
 		return nil, fmt.Errorf("malformed string provided to FromString. Must start with an opening bracket ([). Got: %s", string(runes[0]))
@@ -238,6 +242,28 @@ func FromRunes(runes []rune, parent *SnailfishNumber) (*SnailfishNumber, error) 
 	}
 
 	return num, nil
+}
+
+func (num *SnailfishNumber) cloneDeepRecursiveHelper(parent *SnailfishNumber) *SnailfishNumber {
+	leftIsLeaf := num.Left == nil
+	rightIsLeaf := num.Right == nil
+	newNum := &SnailfishNumber{Parent: parent}
+	if leftIsLeaf {
+		newNum.Left = nil
+		newNum.LeftNum = num.LeftNum
+	} else {
+		// it doesn't matter that newNum isn't done being updated yet -- the child just needs its memory address
+		newNum.Left = num.Left.cloneDeepRecursiveHelper(newNum)
+		newNum.LeftNum = -1
+	}
+	if rightIsLeaf {
+		newNum.Right = nil
+		newNum.RightNum = num.RightNum
+	} else {
+		newNum.Right = num.Right.cloneDeepRecursiveHelper(newNum)
+		newNum.RightNum = -1
+	}
+	return newNum
 }
 
 // getFirstNumAtDepth finds the leftmost number with a depth equal to the specified depth.
