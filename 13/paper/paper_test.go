@@ -1,7 +1,6 @@
 package paper_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/tcc-sejohnson/advent-of-code-2021/13/paper"
@@ -33,10 +32,6 @@ func TestVisibleDotsAfterFold(t *testing.T) {
 		0,
 	)
 
-	fmt.Println("Paper starting state:")
-	paper.Print()
-	fmt.Print("\n")
-
 	numDotsStart := paper.VisibleDots()
 	if numDotsStart != 18 {
 		t.Errorf("paper reports the wrong number of dots at the start. Wanted %v, got %v", 18, numDotsStart)
@@ -46,10 +41,6 @@ func TestVisibleDotsAfterFold(t *testing.T) {
 	if err != nil {
 		t.Errorf("paper failed on the first fold with error %s", err)
 	}
-
-	fmt.Println("Paper state after first fold:")
-	firstFold.Print()
-	fmt.Print("\n")
 
 	numDotsAfterFirstFold := firstFold.VisibleDots()
 	if numDotsAfterFirstFold != 17 {
@@ -61,12 +52,20 @@ func TestVisibleDotsAfterFold(t *testing.T) {
 		t.Errorf("paper failed on the second fold with error %s", err)
 	}
 
-	fmt.Println("Paper state after second fold:")
-	secondFold.Print()
-	fmt.Print("\n")
-
 	numDotsAfterSecondFold := secondFold.VisibleDots()
 	if numDotsAfterSecondFold != 16 {
 		t.Errorf("paper reports the wrong number of dots after the second fold. Wanted %v, got %v", 18, numDotsAfterSecondFold)
+	}
+}
+
+func BenchmarkPartOne(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		paper.PartOne()
+	}
+}
+
+func BenchmarkPartTwo(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		paper.PartTwo()
 	}
 }

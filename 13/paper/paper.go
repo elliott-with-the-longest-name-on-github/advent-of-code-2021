@@ -3,6 +3,7 @@ package paper
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 type Dot struct {
@@ -14,6 +15,28 @@ type Paper struct {
 	Dots map[string]*Dot
 	MaxX int
 	MaxY int
+}
+
+func PartOne() string {
+	paper := ChallengePaper
+	instruction := FoldInstructions[0]
+	newPaper, err := paper.Fold(instruction.Direction, instruction.Line)
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("Part One: %v dots visible after the first fold.", newPaper.VisibleDots())
+}
+
+func PartTwo() string {
+	paper := &ChallengePaper
+	for _, ins := range FoldInstructions {
+		var err error
+		paper, err = paper.Fold(ins.Direction, ins.Line)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return fmt.Sprint("Part Two: \n" + paper.String())
 }
 
 func New(dots map[string]*Dot, MaxX int, MaxY int) Paper {
@@ -56,20 +79,22 @@ func (p *Paper) VisibleDots() int {
 	return len(p.Dots)
 }
 
-func (p *Paper) Print() {
+func (p *Paper) String() string {
+	var sb strings.Builder
 	maxX := p.MaxX
 	maxY := p.MaxY
 	for y := 0; y <= maxY; y++ {
 		for x := 0; x <= maxX; x++ {
 			key := strconv.Itoa(x) + "," + strconv.Itoa(y)
 			if _, exists := p.Dots[key]; exists {
-				fmt.Print("#")
+				sb.WriteString("#")
 			} else {
-				fmt.Print(".")
+				sb.WriteString(".")
 			}
 		}
-		fmt.Print("\n")
+		sb.WriteString("\n")
 	}
+	return sb.String()
 }
 
 func (p *Paper) foldUp(line int) (*Paper, error) {
@@ -134,6 +159,27 @@ func (p *Paper) maxY() *Dot {
 		}
 	}
 	return p.Dots[keyOfMax]
+}
+
+var FoldInstructions []struct {
+	Direction string
+	Line      int
+} = []struct {
+	Direction string
+	Line      int
+}{
+	{Direction: "left", Line: 655},
+	{Direction: "up", Line: 447},
+	{Direction: "left", Line: 327},
+	{Direction: "up", Line: 223},
+	{Direction: "left", Line: 163},
+	{Direction: "up", Line: 111},
+	{Direction: "left", Line: 81},
+	{Direction: "up", Line: 55},
+	{Direction: "left", Line: 40},
+	{Direction: "up", Line: 27},
+	{Direction: "up", Line: 13},
+	{Direction: "up", Line: 6},
 }
 
 var ChallengePaper Paper = New(
