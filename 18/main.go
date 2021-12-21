@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"example.com/aoc18/snailfish"
+	"github.com/tcc-sejohnson/advent-of-code-2021/18/snailfish"
 )
 
 func PartOne() {

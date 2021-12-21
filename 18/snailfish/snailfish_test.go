@@ -3,7 +3,7 @@ package snailfish_test
 import (
 	"testing"
 
-	"example.com/aoc18/snailfish"
+	"github.com/tcc-sejohnson/advent-of-code-2021/18/snailfish"
 )
 
 func TestSnailfishStringification(t *testing.T) {

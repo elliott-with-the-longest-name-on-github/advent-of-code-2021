@@ -3,7 +3,7 @@ package chiton_test
 import (
 	"testing"
 
-	"example.com/aoc15/chiton"
+	"github.com/tcc-sejohnson/advent-of-code-2021/15/chiton"
 )
 
 var lines []string = []string{

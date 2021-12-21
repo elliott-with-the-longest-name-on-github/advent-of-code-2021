@@ -3,7 +3,7 @@ package submarine_test
 import (
 	"testing"
 
-	"example.com/aoc02/submarine"
+	"github.com/tcc-sejohnson/advent-of-code-2021/02/submarine"
 )
 
 func TestSubmarineMovement(t *testing.T) {

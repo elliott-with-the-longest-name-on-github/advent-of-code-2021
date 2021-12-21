@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"example.com/aoc13/paper"
+	"github.com/tcc-sejohnson/advent-of-code-2021/13/paper"
 )
 
 func TestVisibleDotsAfterFold(t *testing.T) {

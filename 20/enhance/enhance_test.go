@@ -3,7 +3,7 @@ package enhance_test
 import (
 	"testing"
 
-	"example.com/aoc20/enhance"
+	"github.com/tcc-sejohnson/advent-of-code-2021/20/enhance"
 )
 
 // This is really gross, but it's how the input is.

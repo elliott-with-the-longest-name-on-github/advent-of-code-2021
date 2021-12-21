@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"example.com/aoc13/paper"
+	"github.com/tcc-sejohnson/advent-of-code-2021/13/paper"
 )
 
 func main() {

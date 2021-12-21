@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"testing"
 
-	"example.com/aoc14/polymerization"
+	"github.com/tcc-sejohnson/advent-of-code-2021/14/polymerization"
 )
 
 var template string = "NNCB"
