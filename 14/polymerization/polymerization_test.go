@@ -39,11 +39,7 @@ func mapFromBasePolymer(base string) map[string]int {
 			continue
 		}
 		pair := string(runes[i-1]) + string(r)
-		if _, exists := polymerMap[pair]; exists {
-			polymerMap[pair] += 1
-		} else {
-			polymerMap[pair] = 1
-		}
+		polymerMap[pair] += 1
 	}
 	return polymerMap
 }
