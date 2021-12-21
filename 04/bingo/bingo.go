@@ -25,6 +25,39 @@ type BingoSubsystem struct {
 	FinishedBoards   int
 }
 
+func PartOne() string {
+	plays := ChallengePlays
+	stringBoards := ChallengeBoards
+	subsystem, err := SubsystemFromText(plays, stringBoards)
+	if err != nil {
+		panic("there was a problem parsing the challenge boards. Error: " + err.Error())
+	}
+	winningScore := -1
+	for _, num := range subsystem.Plays {
+		subsystem.PlayNumber(num)
+		if subsystem.WinningBoard != nil {
+			winningScore = subsystem.WinningBoard.Score()
+			break
+		}
+	}
+	if winningScore == -1 {
+		panic("no board won!")
+	}
+	return fmt.Sprintf("Part One: Final score was %v", winningScore)
+}
+
+func PartTwo() string {
+	plays := ChallengePlays
+	stringBoards := ChallengeBoards
+	subsystem, err := SubsystemFromText(plays, stringBoards)
+	if err != nil {
+		panic("there was a problem parsing the challenge boards. Error: " + err.Error())
+	}
+
+	subsystem.PlayUntilAllBoardsWin()
+	return fmt.Sprintf("Part Two: Final score was %v", subsystem.LastWinningBoard.Score())
+}
+
 func SubsystemFromText(plays []int, boards [][]string) (*BingoSubsystem, error) {
 	bingoBoards := make([]*BingoBoard, 0, len(boards))
 	for _, board := range boards {

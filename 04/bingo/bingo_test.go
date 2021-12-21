@@ -82,3 +82,15 @@ func TestBingoBoardScoring(t *testing.T) {
 		t.Errorf("board score incorrect. Wanted %v, got %v", 4512, score)
 	}
 }
+
+func BenchmarkPartOne(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		bingo.PartOne()
+	}
+}
+
+func BenchmarkPartTwo(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		bingo.PartTwo()
+	}
+}
