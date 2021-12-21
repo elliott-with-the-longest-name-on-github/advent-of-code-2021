@@ -83,3 +83,15 @@ func TestLifeSupportRating(t *testing.T) {
 		t.Errorf("incorrect value for Life Support Rating. Want: %v, got: %v", 230, lsr)
 	}
 }
+
+func BenchmarkPartOne(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		diagnostic.PartOne()
+	}
+}
+
+func BenchmarkPartTwo(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		diagnostic.PartTwo()
+	}
+}

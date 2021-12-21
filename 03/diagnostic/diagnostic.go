@@ -13,6 +13,26 @@ type DiagnosticLog struct {
 	gamma   DiagnosticByte
 }
 
+func PartOne() string {
+	bin := ChallengeBinary
+	log, err := FromBinaryStrings(bin, 12)
+	if err != nil {
+		panic("failed to parse binary input with error " + err.Error())
+	}
+	pc := log.PowerConsumption()
+	return fmt.Sprintf("Part One: Found Power Consumption of %v", pc)
+}
+
+func PartTwo() string {
+	bin := ChallengeBinary
+	log, err := FromBinaryStrings(bin, 12)
+	if err != nil {
+		panic("failed to parse binary input with error " + err.Error())
+	}
+	lsr := log.LifeSupportRating()
+	return fmt.Sprintf("Part Two: Found Life Support rating of %v", lsr)
+}
+
 func New(log []DiagnosticByte, byteLen int) *DiagnosticLog {
 	return &DiagnosticLog{
 		log:     log,
