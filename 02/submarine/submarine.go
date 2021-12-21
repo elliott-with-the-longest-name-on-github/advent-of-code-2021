@@ -16,6 +16,16 @@ type Submarine struct {
 	Aim      int
 }
 
+func PartTwo() string {
+	sub := Submarine{}
+	err := sub.Move(ChallengeInstructions...)
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("Submarine moved %v units.", sub.FinalDistance())
+
+}
+
 func (s *Submarine) Move(instructions ...Instruction) error {
 	for _, instruction := range instructions {
 		switch instruction.Direction {

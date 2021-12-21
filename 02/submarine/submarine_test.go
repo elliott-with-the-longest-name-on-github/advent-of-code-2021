@@ -27,3 +27,9 @@ func TestSubmarineMovement(t *testing.T) {
 		t.Errorf("submarine final distance is incorrect. Want: %v, got: %v", 900, finalDistance)
 	}
 }
+
+func BenchmarkPartTwo(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		submarine.PartTwo()
+	}
+}
