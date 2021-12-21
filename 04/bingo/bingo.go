@@ -103,7 +103,6 @@ func (b *BingoSubsystem) PlayNumber(number int) {
 			}
 		}
 	}
-	return
 }
 
 func BoardFromText(rows []string) (*BingoBoard, error) {
@@ -177,9 +176,9 @@ func (b *BingoBoard) Print() {
 		for _, bNum := range row {
 			val := strconv.Itoa(bNum.Value)
 			if bNum.Marked {
-				val = "[" + val + "]"
+				fmt.Print("[" + val + "]")
 			} else {
-				val = " " + val + " "
+				fmt.Print(" " + val + " ")
 			}
 		}
 		fmt.Println()
