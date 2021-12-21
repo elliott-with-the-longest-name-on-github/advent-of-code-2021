@@ -3,6 +3,7 @@ package chiton
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/RyanCarrier/dijkstra"
 )
@@ -12,6 +13,38 @@ type ChitonMapper struct {
 	matrix    [][]int
 	StartNode int
 	EndNode   int
+}
+
+func PartOne(verbose bool) (header, body string) {
+	c, err := FromLines(ChallengeLines)
+	if err != nil {
+		panic(err)
+	}
+	_, cost, err := c.BestPath()
+	if err != nil {
+		panic(err)
+	}
+	header = fmt.Sprintf("Part One: Cheapest path cost is %v", cost)
+	if verbose {
+		body = c.String()
+	}
+	return
+}
+
+func PartTwo(verbose bool) (header, body string) {
+	c, err := FromLinesExtended(ChallengeLines, 5)
+	if err != nil {
+		panic(err)
+	}
+	_, cost, err := c.BestPath()
+	if err != nil {
+		panic(err)
+	}
+	header = fmt.Sprintf("Part Two: Cheapest path cost is %v", cost)
+	if verbose {
+		body = c.String()
+	}
+	return
 }
 
 func FromLinesExtended(lines []string, timesBigger int) (*ChitonMapper, error) {
@@ -133,12 +166,13 @@ func (c *ChitonMapper) BestPath() (path []int, cost int, err error) {
 	return bestPath.Path, int(bestPath.Distance), nil
 }
 
-func (c *ChitonMapper) PrintBestPath() (path []int, cost int, err error) {
+func (c *ChitonMapper) String() string {
+	var sb strings.Builder
 	numLines := len(c.matrix)
 	lineLen := len(c.matrix[0])
-	path, cost, err = c.BestPath()
+	path, _, err := c.BestPath()
 	if err != nil {
-		return nil, 0, err
+		return ""
 	}
 	for i := 0; i < numLines; i++ {
 		for j := 0; j < lineLen; j++ {
@@ -152,14 +186,14 @@ func (c *ChitonMapper) PrintBestPath() (path []int, cost int, err error) {
 			}
 			num := strconv.Itoa(c.matrix[i][j])
 			if contains {
-				fmt.Print("[" + num + "]")
+				sb.WriteString("[" + num + "]")
 			} else {
-				fmt.Print(" " + num + " ")
+				sb.WriteString(" " + num + " ")
 			}
 		}
-		fmt.Println()
+		sb.WriteString("\n")
 	}
-	return path, cost, err
+	return sb.String()
 }
 
 var ChallengeLines []string = []string{

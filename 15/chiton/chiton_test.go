@@ -46,3 +46,15 @@ func TestExtendedPathDistance(t *testing.T) {
 		t.Errorf("incorrect distance for best path. Want: %v, got: %v", 315, cost)
 	}
 }
+
+func BenchmarkPartOne(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		chiton.PartOne(false)
+	}
+}
+
+func BenchmarkPartTwo(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		chiton.PartTwo(false)
+	}
+}

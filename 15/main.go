@@ -7,13 +7,8 @@ import (
 )
 
 func main() {
-	c, err := chiton.FromLinesExtended(chiton.ChallengeLines, 5)
-	if err != nil {
-		panic(err)
-	}
-	_, cost, err := c.BestPath()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(cost)
+	p1Header, _ := chiton.PartOne(false)
+	fmt.Println(p1Header)
+	p2Header, _ := chiton.PartTwo(false)
+	fmt.Println(p2Header)
 }

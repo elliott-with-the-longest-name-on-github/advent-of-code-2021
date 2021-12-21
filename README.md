@@ -99,5 +99,12 @@ go test -v ./$DIR/...
       </td>
       <td>This was unquestionably my favorite one so far. I was one of the chumps who brute forced it with a string at the beginning, only to be slapped in the face with the exponential inefficiencies in the next section. I rewrote the solution as a map, which was not too hard at all. Since Part One and Part Two are the same thing but with more iterations, I decided to bench this one a little differently. As you can see, it runs in roughly <code>O(N)</code> time, which makes sense, as there are only a few possible polymer pairs and that number is reached very early on.</td>
     </tr>
+    <tr>
+      <td>15</td>
+      <td>Chiton</td>
+      <td>8.523</td>
+      <td>199.635</td>
+      <td>This one was easy only because I cheated... sort of. I knew Dijkstra's or A* was pretty much the way to go for this, so I found a library for Dijkstra's. No point in implementing very well-defined functionality like that. As usual, parsing the input was the hardest part -- it's times like these when I <em>really</em> wish Go had <code>array.Map</code> and company. </td>
+    </tr>
   </tbody>
 </table>
