@@ -106,5 +106,12 @@ go test -v ./$DIR/...
       <td>199.635</td>
       <td>This one was easy only because I cheated... sort of. I knew Dijkstra's or A* was pretty much the way to go for this, so I found a library for Dijkstra's. No point in implementing very well-defined functionality like that. As usual, parsing the input was the hardest part -- it's times like these when I <em>really</em> wish Go had <code>array.Map</code> and company. </td>
     </tr>
+    <tr>
+      <td>21</td>
+      <td>Dirac Dice</td>
+      <td>0.005</td>
+      <td>413.700</td>
+      <td>Well isn't that a jump from Part One to Part Two. Part one was fun and I had a bit too much fun with the solution. Part Two kicked my butt, as my previous design pretty much didn't support what I needed to do at all. I'm still not super happy with the performance, but it's memoized already and I really don't want to optimize more.</td>
+    </tr>
   </tbody>
 </table>
