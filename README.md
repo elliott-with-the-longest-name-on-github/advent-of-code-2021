@@ -67,6 +67,13 @@ go test -v ./$DIR/...
       <td>Not too difficult from an execution standpoint. Essentially, the interesting part was parsing the input into lines. Since the coordinate system only accepted integers, each line could be broken into a finite set of points and mapped to its count, making filtering for "Number of coordinates with count greater than X" pretty easy.</td>
     </tr>
     <tr>
+      <td>06</td>
+      <td>Lanternfish</td>
+      <td>0.046</td>
+      <td>0.129</td>
+      <td>Not much to say about this one -- pretty trivial, as long as you're not trying to track it through a list or stacks. Maps are the best!</td>
+    </tr>
+    <tr>
       <td>13</td>
       <td>Transparent Oragami</td>
       <td>0.113</td>
