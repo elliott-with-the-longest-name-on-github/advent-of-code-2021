@@ -74,6 +74,13 @@ go test -v ./$DIR/...
       <td>Not much to say about this one -- pretty trivial, as long as you're not trying to track it through a list or stacks. Maps are the best!</td>
     </tr>
     <tr>
+      <td>07</td>
+      <td>The Treachery of Whales</td>
+      <td>0.065</td>
+      <td>0.021</td>
+      <td>This one was pretty interesting. The solution to use the median in the first part was obvious to me, but the mean in the second part took me a bit to figure out. I'm sure there's a better way to resolve split medians and figure out whether to floor or ceiling the result of mean, but brute forcing it was still super fast. This is the first one where I've seen faster times on Part 2 than Part 1, simply because calculating the mean doesn't require a list sort like the median does.</td>
+    </tr>
+    <tr>
       <td>13</td>
       <td>Transparent Oragami</td>
       <td>0.113</td>
