@@ -81,6 +81,13 @@ go test -v ./$DIR/...
       <td>This one was pretty interesting. The solution to use the median in the first part was obvious to me, but the mean in the second part took me a bit to figure out. I'm sure there's a better way to resolve split medians and figure out whether to floor or ceiling the result of mean, but brute forcing it was still super fast. This is the first one where I've seen faster times on Part 2 than Part 1, simply because calculating the mean doesn't require a list sort like the median does.</td>
     </tr>
     <tr>
+      <td>09</td>
+      <td>Smoke Basin</td>
+      <td>6.155</td>
+      <td>8.569</td>
+      <td>This was a super fun depth-first search algorithm to implement. So fun, in fact, that I packaged this one with a super cool terminal visualization. It should be pretty self-explanatory how to view it -- just look in <code>main.go</code>.</td>
+    </tr>
+    <tr>
       <td>13</td>
       <td>Transparent Oragami</td>
       <td>0.113</td>
