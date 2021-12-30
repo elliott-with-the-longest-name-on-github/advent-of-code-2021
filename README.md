@@ -88,6 +88,13 @@ go test -v ./$DIR/...
       <td>This was a super fun depth-first search algorithm to implement. So fun, in fact, that I packaged this one with a super cool terminal visualization. It should be pretty self-explanatory how to view it -- just look in <code>main.go</code>.</td>
     </tr>
     <tr>
+      <td>10</td>
+      <td>Syntax Scoring</td>
+      <td>0.607</td>
+      <td>0.652</td>
+      <td>I found this one to be interesting and fun. I didn't particularly prioritize bleeding fast performance; rather, I did my best from the outset to build a legit tag parsing system. I figured I'd have to do something with incomplete tags, so I went ahead and dealt with them during Part One. The design means that I pay the penalty of parsing lines that I could throw away for both Parts One and Two, but it also means that I <em>could</em> share a <code>LogDump</code> object between them if this were a real-world scenario. The looping/recursion combination I used for parsing everything in Part One translated over to Part Two <em>extremely</em> well -- for Part Two, I only had to add one line of code to the existing base, plus the scoring logic for incomplete lines.</td>
+    </tr>
+    <tr>
       <td>13</td>
       <td>Transparent Oragami</td>
       <td>0.113</td>
